@@ -1,4 +1,4 @@
-from pathlib import Path
+from pathlib import Path, PurePath
 import re
 from typing import Optional
 
@@ -19,16 +19,26 @@ ROOT = Path(
     "Test",
 )
 
-ROOT = Path("/Users/bouge/share/Personnel/Personnes/Mado/Photos/2024-04-06_Juliette")
+ROOT = Path(
+    "/",
+    "Users",
+    "bouge",
+    "share",
+    "Personnel",
+    "Personnes",
+    "Mado",
+    "Photos",
+    "2024-04-06_Juliette",
+)
 # À remplacer par le chemin de la racine de tes dossiers photos
 
-FINAL_PATH_PATTERN = r"(\d{4})-(\d{2})-(\d{2})-(\d{2})-(\d{2})-(\d{2})_([\w-]+)"
+FINAL_STEM_PATTERN = r"(\d{4})-(\d{2})-(\d{2})-(\d{2})-(\d{2})-(\d{2})_([\w-]+)"
 EXIF_DATE_PATTERN = r"(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})"
 
 ################################################################################
 
 
-# Doc de la méthode walk: https://docs.python.org/3/library/pathlib.html#pathlib.Path.walk
+# Doc de la méthode walk: https:", "/docs.python.org/3/library/pathlib.html#pathlib.Path.walk
 
 
 def main():
@@ -143,7 +153,7 @@ def make_formatted_date(*, exif_date: str, path: Path) -> str:
 
 
 def is_final_stem(stem: str) -> Optional[re.Match]:
-    m = re.fullmatch(FINAL_PATH_PATTERN, stem, flags=re.IGNORECASE)
+    m = re.fullmatch(FINAL_STEM_PATTERN, stem, flags=re.IGNORECASE)
     return m
 
 
