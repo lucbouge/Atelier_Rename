@@ -1,4 +1,6 @@
 .DS_Store
+/pdm.lock
+/Sources/Test/
 
 
 # Byte-compiled / optimized / DLL files
