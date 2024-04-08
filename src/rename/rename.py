@@ -19,17 +19,6 @@ ROOT = Path(
     "Test",
 )
 
-ROOT = Path(
-    "/",
-    "Users",
-    "bouge",
-    "share",
-    "Personnel",
-    "Personnes",
-    "Mado",
-    "Photos",
-    "2024-04-06_Juliette",
-)
 # À remplacer par le chemin de la racine de tes dossiers photos
 
 FINAL_STEM_PATTERN = r"(\d{4})-(\d{2})-(\d{2})-(\d{2})-(\d{2})-(\d{2})_([\w-]+)"
@@ -47,8 +36,8 @@ def main():
     for dirpath, dirnames, filenames in ROOT.walk():
         for filename in filenames:
             path = dirpath / filename
-            suffix = path.suffix.lower()
-            if suffix not in (".jpeg", ".jpg"):
+            suffix = path.suffix
+            if suffix.lower() not in (".jpeg", ".jpg"):
                 continue
             process_path(path=path)
 
@@ -69,7 +58,7 @@ def process_path(*, path: Path):
     if exif_date is None:
         return
     new_path = make_new_path(exif_date=exif_date, old_path=path)
-    # rename(exif_date=exif_date, old_path=path, new_path=new_path)
+    rename(exif_date=exif_date, old_path=path, new_path=new_path)
 
 
 ################################################################################
@@ -84,7 +73,7 @@ def rename(*, exif_date: str, old_path: Path, new_path: Path):
         print_warning(f"Target path already exists. Skipping: {new_path}")
         return
     print(f"{old_path} ==> {new_path}")
-    old_path.rename(new_path)
+    # old_path.rename(new_path)
 
 
 @typechecked
@@ -112,7 +101,9 @@ def get_image_from_path(*, path: Path) -> Optional[exif.Image]:
         try:
             image = exif.Image(cin)
         except:
-            print_warning(f"EXIF could not extract image. Skipping: {path}")
+            print_warning(
+                f"Unexcepted error during extracting image from JPEG file. Skipping: {path}"
+            )
             return None
     return image
 
@@ -121,7 +112,7 @@ def get_image_from_path(*, path: Path) -> Optional[exif.Image]:
 def extract_exif_date_from_image(*, image: exif.Image, path: Path) -> Optional[str]:
     stem = path.stem
     if not image.has_exif:
-        print_warning(f"No EXIF data found in stem. Skipping: {stem}")
+        print_warning(f"This stem has no EXIF data. Skipping: {stem}")
         return None
     ##
     exif_data_list = tuple(image.list_all())
@@ -132,7 +123,7 @@ def extract_exif_date_from_image(*, image: exif.Image, path: Path) -> Optional[s
         )
         if len(possible_data) > 0:
             print_warning(
-                "For information, possible date-like EXIF data: {possible_data}"
+                "For information, here are possible date-like EXIF data: {possible_data}"
             )
         return None
     date = image.datetime
