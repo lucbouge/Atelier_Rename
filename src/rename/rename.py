@@ -69,7 +69,7 @@ def process_path(*, path: Path):
     if exif_date is None:
         return
     new_path = make_new_path(exif_date=exif_date, old_path=path)
-    rename(exif_date=exif_date, old_path=path, new_path=new_path)
+    # rename(exif_date=exif_date, old_path=path, new_path=new_path)
 
 
 ################################################################################
