@@ -50,6 +50,7 @@ def walk_Path(
     print("Using walk_Path")
     for dirpath, dirnames, filenames in os.walk(str(root)):
         yield (Path(dirpath), dirnames, filenames)
+    pass
 
 
 ################################################################################
