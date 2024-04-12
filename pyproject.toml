@@ -3,8 +3,11 @@ name = "Rename"
 version = "0.1.0"
 description = "Default template for PDM package"
 authors = [{ name = "Luc Bougé", email = "Luc.Bouge@ens-rennes.fr" }]
-dependencies = ["exif>=1.6.0", "typeguard>=4.2.1"]
-requires-python = "==3.12.*"
+dependencies = [
+    "exif>=1.6.0",
+    "typeguard>=4.2.1",
+]
+requires-python = "==3.10.*"
 readme = "README.md"
 license = { text = "MIT" }
 

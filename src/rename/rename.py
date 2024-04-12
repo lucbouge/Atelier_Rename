@@ -1,6 +1,7 @@
 from pathlib import Path, PurePath
 import re
-from typing import Optional
+import os
+from typing import Optional, Generator, Tuple, Sequence
 
 # Pour l'importation des modules, voir https://docs.python.org/3/installing/index.html
 
@@ -33,13 +34,22 @@ EXIF_DATE_PATTERN = r"(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})"
 def main():
     assert ROOT.exists(), ROOT
     print(f"{ROOT = }")
-    for dirpath, dirnames, filenames in ROOT.walk():
+    for dirpath, dirnames, filenames in walk_Path(root=ROOT):
         for filename in filenames:
             path = dirpath / filename
             suffix = path.suffix
             if suffix.lower() not in (".jpeg", ".jpg"):
                 continue
             process_path(path=path)
+
+
+@typechecked
+def walk_Path(
+    *, root: Path
+) -> Generator[Tuple[Path, Sequence[str], Sequence[str]], None, None]:
+    print("Using walk_Path")
+    for dirpath, dirnames, filenames in os.walk(str(root)):
+        yield (Path(dirpath), dirnames, filenames)
 
 
 ################################################################################
